@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  // Skip target is provided in layout (main#main-content)
+
+  // Hero Section
+  section.hero(role="region" aria-labelledby="hero-heading")
+    .hero-content
+      h1#hero-heading Traditional Lacquerware Collection
+      p Handcrafted lacquerware showcasing heritage, artistry, and timeless beauty.
+      a.btn(href="/products" role="button") Explore Collection
+
+  // About Section
+  section.about(role="region" aria-labelledby="about-heading")
+    .about-content
+      h2#about-heading Crafted with Heritage
+      p
+        | Each piece of our lacquerware is carefully handmade by skilled artisans,
+        | using traditional techniques passed down through generations.
+
+  // Features Section
+  section.features(role="region" aria-labelledby="features-heading")
+    h2#features-heading Why Our Lacquerware
+    .feature-grid(role="list")
+      .feature(role="listitem")
+        h3 Authentic Craftsmanship
+        p Made using traditional lacquer techniques with meticulous attention to detail.
+      .feature(role="listitem")
+        h3 Natural Materials
+        p Crafted from natural resins and sustainable materials.
+      .feature(role="listitem")
+        h3 Elegant Designs
+        p Inspired by cultural motifs and timeless artistry.
+
+  // Call to Action Section
+  section.cta(role="region" aria-labelledby="cta-heading")
+    h2#cta-heading Bring Tradition Into Your Home
+    a.btn.btn-dark(href="/products" role="button") View Lacquerware Products
+    if user && user.role === 'admin'
+      a.btn(href="/products/add") Add Product
+    else
+      a.btn(href="/contact") Contact Us
+
+
+  // Footer
+  footer.footer(role="contentinfo")
+    p © 2025 Lacquerware Collection. All rights reserved.

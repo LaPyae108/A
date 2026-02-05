@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  main
+    .pd-container
+
+      // ===== GALLERY =====
+      .pd-gallery
+        .pd-main-image
+          img#pdMainImage.pd-main-img(
+            src=product.images[0],
+            alt=product.name
+          )
+
+        .pd-thumbnails
+          each img, index in product.images
+            img.pd-thumb(
+              src=img,
+              alt=product.name + ' thumbnail ' + (index + 1),
+              onclick=`document.getElementById('pdMainImage').src='${img}'; setActiveThumbnail(${index});`
+            )
+
+      // ===== PRODUCT INFO =====
+      .pd-info
+        h1= product.name
+        p.pd-price £#{product.price}
+        .pd-divider
+        
+        button.pd-button Add to Bag
+        p.pd-description= product.description
+
+  // ===== SCRIPT =====
+  script.
+    function setActiveThumbnail(activeIndex) {
+      const thumbs = document.querySelectorAll('.pd-thumb');
+      thumbs.forEach((thumb, idx) => {
+        thumb.style.borderColor = idx === activeIndex ? '#6b1d1d' : 'transparent';
+      });
+    }
+    setActiveThumbnail(0);

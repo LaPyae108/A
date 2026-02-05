@@ -1,0 +1,84 @@
+#!/usr/bin/env node
+
+require('dotenv').config();
+const mongoose = require('mongoose');
+const app = require('../app');
+const debug = require('debug')('myapp:server');
+const http = require('http');
+
+// ====== DEFINE PORT OUTSIDE ======
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+(async () => {
+  try {
+    // 🔑 CONNECT TO MONGODB FIRST
+    await mongoose.connect(process.env.MONGO_URI);
+
+    console.log('🟢 MongoDB Atlas connected');
+
+    mongoose.connection.on('error', err => {
+      console.error('🔴 MongoDB error:', err);
+    });
+
+    /**
+     * Create HTTP server.
+     */
+    const server = http.createServer(app);
+
+    /**
+     * Listen on provided port
+     */
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', () => onListening(server));
+
+  } catch (err) {
+    console.error('❌ MongoDB connection failed:', err);
+    process.exit(1);
+  }
+})();
+
+/**
+ * Normalize a port
+ */
+function normalizePort(val) {
+  const p = parseInt(val, 10);
+  if (isNaN(p)) return val;
+  if (p >= 0) return p;
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error"
+ */
+function onError(error) {
+  if (error.syscall !== 'listen') throw error;
+
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening"
+ */
+function onListening(server) {
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+  console.log('🟢 Server running on ' + bind);
+}

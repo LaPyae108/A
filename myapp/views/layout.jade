@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="MTS web application main content page")
+    title MTS
+    link(rel="stylesheet", href="/stylesheets/style.css")
+
+    script.
+      function changeImage(src) {
+        const img = document.getElementById('mainImage');
+        if (img) img.src = src;
+      }
+
+  body
+    // Skip link for keyboard users
+    a.skip-link(href="#main-content") Skip to main content
+
+    // ===== HEADER BAR =====
+    header.site-header
+      .header-inner
+        h1.site-logo MTS
+
+        nav.header-actions
+          if user
+            a.log-out-button(href="/logout") Log out
+          else
+            a.login-button(href="/login") Log in
+
+    // ===== MAIN CONTENT =====
+    main#main-content(tabindex="-1")
+      block content

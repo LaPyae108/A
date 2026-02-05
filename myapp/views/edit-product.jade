@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  h1 Edit Product
+
+  form.form-page(
+    method="POST",
+    action="/products/" + product._id + "?_method=PUT",
+    enctype="multipart/form-data"
+  )
+
+    label(for="productId") Product ID
+    input(
+      type="text",
+      name="productId",
+      value=product.productId,
+      required
+    )
+
+    label(for="name") Product Name
+    input(
+      type="text",
+      name="name",
+      value=product.name,
+      required
+    )
+
+    label(for="price") Price (£)
+    input(
+      type="number",
+      name="price",
+      step="0.01",
+      value=product.price,
+      required
+    )
+
+    label(for="description") Description
+    textarea(name="description")= product.description
+
+    // Current image preview
+    if product.image
+      p Current Image
+      img(
+        src=product.images[0],
+        alt="Current product image",
+        style="max-width:200px; display:block; margin-bottom:10px;"
+      )
+
+    // Upload new image
+    label(for="images") Change Image (optional)
+    input(type="file", name="images", multiple accept="image/*")
+
+    button(type="submit") Save Changes

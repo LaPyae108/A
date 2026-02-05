@@ -1,0 +1,71 @@
+extends layout
+
+block content
+  h1 Product List
+
+  // Search Form
+  form.form-page(
+    method="GET",
+    action="/products",
+    role="search",
+    aria-labelledby="search-heading",
+    class="search-form"
+  )
+    h2#search-heading.visually-hidden Search products
+
+    label(for="search-input") Search by Product ID or Name
+    input#search-input(
+      type="text",
+      name="search",
+      placeholder="Search by Product ID or Name",
+      value=search || ''
+    )
+    button(type="submit") Search
+
+  // Product Grid
+  section.product-grid(
+    role="list",
+    aria-labelledby="products-heading"
+  )
+    h2#products-heading.visually-hidden Available products
+
+    if products.length === 0
+      p.no-results(role="status") No products found.
+
+    each product in products
+      article.product-card(role="listitem")
+       a.product-link(href='/products/' + product._id)
+
+        figure.product-image.lacquer-surface
+          img.product-image-img(
+            src=product.images[0],
+            alt='Image of ' + product.name,
+            loading="lazy"
+          )
+
+        h3= product.name
+        p
+          strong Product ID:
+          |  #{product.productId}
+
+        p.price
+          span.visually-hidden Price:
+          |  £#{product.price}
+
+        // 🔐 ADMIN ACTIONS ONLY
+        if user && user.role === 'admin'
+          .product-actions
+            a.button-edit(
+              href='/products/' + product._id + '/edit',
+              aria-label='Edit product ' + product.name
+            ) Edit
+
+            form.button-delete(
+              method="POST",
+              action='/products/' + product._id + '?_method=DELETE'
+            )
+              button(
+                type="submit",
+                aria-label='Delete product ' + product.name,
+                onclick="return confirm('Are you sure you want to delete this product?')"
+              ) Delete

@@ -1,0 +1,69 @@
+extends layout
+
+block content
+  h1 Add New Product
+
+  form.form-page(
+    method="POST",
+    action="/products/add",
+    enctype="multipart/form-data",
+    aria-labelledby="form-heading"
+  )
+    h2#form-heading.visually-hidden Add new product form
+
+    // Product ID
+    .form-group
+      label(for="product-id") Product ID
+      input#product-id(
+        type="text",
+        name="productId",
+        placeholder="e.g. LAC-001",
+        required,
+        aria-required="true"
+      )
+
+    // Product Name
+    .form-group
+      label(for="product-name") Product Name
+      input#product-name(
+        type="text",
+        name="name",
+        required,
+        aria-required="true"
+      )
+
+    // Price
+    .form-group
+      label(for="price") Price (£)
+      input#price(
+        type="number",
+        name="price",
+        min="0",
+        step="0.01",
+        required,
+        aria-required="true"
+      )
+
+    // Description
+    .form-group
+      label(for="description") Description
+      textarea#description(
+        name="description",
+        rows="4"
+      )
+
+    // Image upload
+    .form-group
+      label(for="image-upload") Upload Product Image
+      input#image-upload(
+        type="file",
+        name="images",
+        multiple accept="image/*",
+        required,
+        aria-required="true"
+      )
+      p.form-hint Accepted formats: JPG, PNG. Max size 5MB.
+
+    // Submit button
+    button(type="submit") Add Product
+
